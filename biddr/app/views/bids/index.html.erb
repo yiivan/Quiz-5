@@ -1,0 +1,11 @@
+<h2><%= current_user.first_name %>'s Bids</h2>
+
+<% if user_signed_in? %>
+  <ol>
+    <% @bids.each do |b| %>
+      <div>
+          <li>Bid $<%= b.bid_price %> for the Auction "<%= b.auction.title %>" on <%= b.created_at.strftime("%B %e, %Y") %> </li>
+      </div>
+    <% end %>
+  </ol>
+<% end %>

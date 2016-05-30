@@ -1,0 +1,47 @@
+<h1><%= @auction.title %></h1>
+<p>By: <%= @auction.user.full_name %></p>
+<p>Ends on: <%= @auction.ends_on %></p>
+<p><%= @auction.details %></p>
+
+<br>
+
+<p>Current Price: <%= @auction.bids.maximum("bid_price") %></p>
+
+<% if !@auction.bids.any? %>
+  <p>Reserve Price Not Met</p>
+<% elsif @auction.bids.maximum("bid_price") < @auction.reserve_price %>
+  <p>Reserve Price Not Met</p>
+<% else %>
+  <p>Reserve Price Met</p>
+<% end %>
+<br>
+
+<% if can? :bid, @auction %>
+  <%= @auction.errors.full_messages.join(", ") %>
+  <%= simple_form_for [@auction, @bid] do |f| %>
+    <%= f.input :bid_price %>
+    <%= f.submit class: "btn btn-primary" %>
+  <% end %>
+<% end %>
+
+<%# if can? :crud, @auction %>
+  <%#= simple_form_for @auction do |f| %>
+    <%#= f.input :publish %>
+    <%#= f.submit class: "btn btn-primary" %>
+  <%# end %>
+<%# end %>
+
+<% if (can? :crud, @auction) && @auction.publish != true %>
+  <%= button_to "Publish", publish_auction_path(@auction), method: "patch" %>
+<% else %>
+  <%= button_tag "Published", disabled: true %>
+<% end %>
+
+
+<ul>
+  <% @bids.each do |b| %>
+    <div>
+        <li>$<%= b.bid_price %> on <%= b.created_at.strftime("%B %e, %Y") %> <%= "by #{b.user.full_name}" %></li>
+    </div>
+  <% end %>
+</ul>

@@ -1,0 +1,15 @@
+<%= @auction.errors.full_messages.join(", ") %>
+
+<%= simple_form_for @auction do |f| %>
+  <%= f.input :title %>
+  <%= f.input :details %>
+  <%= f.input :ends_on, input_html: {id: "datepicker"} %>
+  <%= f.input :reserve_price %>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>
+
+<script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+</script>

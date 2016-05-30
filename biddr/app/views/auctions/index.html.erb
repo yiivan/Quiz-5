@@ -1,0 +1,8 @@
+<% @auctions.each do |a| %>
+  <% if a.publish || a.user == current_user %>
+    <div>
+      <%= link_to a.title, auction_path(a) %>
+      <hr>
+    </div>
+  <% end %>
+<% end %>
